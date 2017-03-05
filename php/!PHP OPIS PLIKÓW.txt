@@ -1,0 +1,20 @@
+Opis plików php bo zaczyna siê robiæ gówno:
+
+Spis treœci:
+
+
+1.chuj.php 
+2.connect_sql.php
+3.contact.php
+4.dane.php
+5.index.php
+6.JSON.php 
+7.load.php
+8.logout.php
+9.markerdata.sql
+10.markertable.sql
+11.pwm.sql
+12.rejestracja.php
+13.save.php
+14.subscribe.php 
+

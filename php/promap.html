@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<?php
+session_start();
+?>
+<html>
+    <head>
+		<link rel="stylesheet" href="../assets/css/login_style.css" type="text/css" />
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script> 
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVtnvK6oPtm7mEol6V11ruo4nReAjCmoE"></script>
+        <link rel="stylesheet" href="css/jquery-ui-1.8.18.custom.css"/>
+		 <body onload="initialize()">
+		 
+		 
+		 <form align="right" name="form1" method="post" action="logout.php">
+		 
+			<input name="submit2" type="submit" id="submit2" class="logoutLblPos" value="Log Out">
+		</label>
+</form>
+		 	<div id="title">
+	Pocket World Map
+	
+	<hr width="20%" />
+	</div>
+
+        <script type="text/javascript">
+            var map;
+            var geocoder;
+			
+			
+function addMarker(latlng)
+{
+	var marker	=	new google.maps.Marker(
+		{
+			position: latlng,
+			map: map
+		}
+	);
+}
+			function initialize()
+            {
+                var myLatlong   =   new google.maps.LatLng(9.9312328, 76.2673041);
+                var myOptions   =   {
+                                        zoom:8,
+                                        center:myLatlong,
+                                        mapTypeId:google.maps.MapTypeId.ROADMAP
+                                    };
+               map          =   new google.maps.Map(document.getElementById('map_canvas'),myOptions);
+               geocoder      =   new google.maps.Geocoder();   
+			   
+			   google.maps.event.addListener(map,'click',function(zdarzenie)
+				{
+					if(zdarzenie.latLng)	
+					{
+						addMarker(zdarzenie.latLng);
+					
+					}
+				});
+            }
+			
+var dispatchForCode = function(event, callback) {
+  var code;
+  
+  if (event.key !== undefined) {
+    code = event.key;
+  } else if (event.keyIdentifier !== undefined) {
+    code = event.keyIdentifier;
+  } else if (event.keyCode !== undefined) {
+    code = event.keyCode;
+  }
+  
+  callback(code);
+};
+            
+          $(document).ready(function(){
+              $("#autocomplete").autocomplete({
+                  source:function(request,response){
+                      geocoder.geocode({'address':request.term},function(results){
+                          response($.map(results,function(item){
+                              return {
+                                 label:item.formatted_address,
+                                 value:item.formatted_address,
+                                 latitude:item.geometry.location.lat(),
+                                 longitude:item.geometry.location.lng(),
+                              }
+                              
+                          }))
+                      })
+                 },
+                  select:function(event,ui) {
+                    var location    =   new google.maps.LatLng(ui.item.latitude,ui.item.longitude);
+                    marker          =   new google.maps.Marker({
+                        map:map,
+                        draggable:true
+                    })
+                   var stringvalue     =   'Latitude:<input name="value[]" type="text" value="'+ui.item.latitude+'" >Longitude:<input name="value[]" type="text" value="'+ui.item.longitude+'">Description:<input name="value[]" type="text\n" <br/>';
+                    $("#value").append(stringvalue);
+                    marker.setPosition(location);
+                    map.setCenter(location);
+                    
+                    
+                }
+                  
+              })
+          
+            });
+			
+
+        </script>
+    </head>
+	
+	
+        <input type="text" id="autocomplete">
+        <div id="map_canvas" style="width:500px;height:500px;float:left">
+		
+        </div>
+        <form action="save.php" method="POST">
+			<div id="value">
+			
+			</div>
+			<input type="submit" >
+		</form>
+    </body>
+</html>
